@@ -1,4 +1,4 @@
-# Neckflix Clone - Realflix
+# Nflix Clone Coding - Nockflix
 
 ## 목차
 
