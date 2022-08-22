@@ -54,7 +54,6 @@ function OnTheAirSlider() {
   const clickedShow =
     bigMovieMatch?.params.showId &&
     data?.results.find((show) => `${show.id}` === bigMovieMatch.params.showId);
-  console.log(bigMovieMatch);
   return (
     <React.Fragment>
       <Slider>
@@ -77,11 +76,12 @@ function OnTheAirSlider() {
               .slice(offset * index, offset * index + offset)
               .map((show) => (
                 <BoxComponent
-                  key={show.id}
+                  key={`onAir_${show.id}`}
                   id={show.id}
                   backdropPath={show.backdrop_path ?? show.poster_path}
                   title={show.name}
                   type="tv"
+                  sliderName="onAir"
                 />
               ))}
           </Row>
@@ -127,6 +127,7 @@ function OnTheAirSlider() {
       </Slider>
       {bigMovieMatch && clickedShow && (
         <BigMovieComponent
+          sliderName="onAir"
           title={clickedShow.name}
           backdrop_path={clickedShow.backdrop_path ?? clickedShow.poster_path}
           overview={clickedShow.overview}

@@ -57,7 +57,6 @@ function TopRatedShowSlider() {
   const clickedShow =
     bigMovieMatch?.params.showId &&
     data?.results.find((show) => `${show.id}` === bigMovieMatch.params.showId);
-  console.log(bigMovieMatch);
   return (
     <React.Fragment>
       <Slider>
@@ -81,6 +80,7 @@ function TopRatedShowSlider() {
                   backdropPath={show.backdrop_path ?? show.poster_path}
                   title={show.name}
                   type="tv"
+                  sliderName="topRated"
                 />
               ))}
           </Row>
@@ -126,6 +126,7 @@ function TopRatedShowSlider() {
       </Slider>
       {bigMovieMatch && clickedShow && (
         <BigMovieComponent
+          sliderName="topRated"
           title={clickedShow.name}
           backdrop_path={clickedShow.backdrop_path ?? clickedShow.poster_path}
           overview={clickedShow.overview}

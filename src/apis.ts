@@ -8,6 +8,7 @@ export interface IMovie {
   title: string;
   overview: string;
   release_date: string;
+  vote_average: number;
 }
 
 export interface IGetMoviesResult {
@@ -28,9 +29,23 @@ export interface ITvShow {
   name: string;
   overview: string;
   poster_path: string;
+  vote_average: number;
 }
 
 export interface IGetTvShowResult {
+  page: number;
+  results: ITvShow[];
+  total_pages: number;
+  total_results: number;
+}
+
+export interface ISearchMoviesResult {
+  page: number;
+  results: IMovie[];
+  total_pages: number;
+  total_results: number;
+}
+export interface ISearchTvShowsResult {
   page: number;
   results: ITvShow[];
   total_pages: number;
@@ -81,6 +96,22 @@ export async function getTopRatedTvShow() {
   return await (
     await fetch(
       `${BASE_PATH}/tv/top_rated?api_key=${API_KEY}&language=ko&region=kr`
+    )
+  ).json();
+}
+
+export async function getSearchMovies(query: string) {
+  return await (
+    await fetch(
+      `${BASE_PATH}/search/movie?api_key=${API_KEY}&language=ko&region=kr&query=${query}`
+    )
+  ).json();
+}
+
+export async function getSearchTvShows(query: string) {
+  return await (
+    await fetch(
+      `${BASE_PATH}/search/tv?api_key=${API_KEY}&language=ko&region=kr&query=${query}`
     )
   ).json();
 }

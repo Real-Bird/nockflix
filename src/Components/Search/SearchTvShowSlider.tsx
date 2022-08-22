@@ -1,11 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
+import React, { useState } from "react";
 import { useMatch } from "react-router-dom";
-import styled from "styled-components";
-import { getTopRatedMovies, IGetMoviesResult } from "../../apis";
-import BigMovieComponent from "./BigMovieComponent";
-import BoxComponent from "./BoxComponent";
+import { getSearchTvShows, ISearchTvShowsResult } from "../../apis";
+import BigMovieComponent from "../Movies/BigMovieComponent";
+import BoxComponent from "../Movies/BoxComponent";
 import { Row, Slider, SliderTitle } from "../StyledComponents/SliderStyle";
 
 const offset = 6;
@@ -26,20 +25,19 @@ const rowVariants = {
   },
 };
 
-function TopRatedSlider() {
-  const { data } = useQuery<IGetMoviesResult>(
-    ["movies", "topRated"],
-    getTopRatedMovies
+interface ISearchProps {
+  query: string;
+}
+
+function SearchTvShowSlider({ query }: ISearchProps) {
+  const { data } = useQuery<ISearchTvShowsResult>(
+    ["search", "searchTvShows"],
+    () => getSearchTvShows(query)
   );
+  const bigMovieMatch = useMatch("/search/:searchId");
   const [direction, setDirection] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const [index, setIndex] = useState(0);
-  const bigMovieMatch = useMatch("/movies/:movieId");
-  const clickedMovie =
-    bigMovieMatch?.params.movieId &&
-    data?.results.find(
-      (movie) => `${movie.id}` === bigMovieMatch.params.movieId
-    );
   const increaseIndex = () => {
     if (data) {
       if (leaving) return;
@@ -60,10 +58,15 @@ function TopRatedSlider() {
     }
   };
   const toggleLeaving = () => setLeaving((prev) => !prev);
+  const clickTvShow =
+    bigMovieMatch?.params.searchId &&
+    data?.results.find(
+      (movie) => `${movie.id}` === bigMovieMatch.params.searchId
+    );
   return (
-    <>
+    <React.Fragment>
       <Slider>
-        <SliderTitle>Top Rated Movies</SliderTitle>
+        <SliderTitle>Similar Tv Shows</SliderTitle>
         <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
           <Row
             custom={direction}
@@ -76,14 +79,14 @@ function TopRatedSlider() {
           >
             {data?.results
               .slice(offset * index, offset * index + offset)
-              .map((movie) => (
+              .map((show) => (
                 <BoxComponent
-                  key={movie.id}
-                  id={movie.id}
-                  backdropPath={movie.backdrop_path ?? movie.poster_path}
-                  title={movie.title}
-                  type="movies"
-                  sliderName="topRated"
+                  key={show.id}
+                  id={show.id}
+                  backdropPath={show.backdrop_path ?? show.poster_path}
+                  title={show.name}
+                  type="search"
+                  sliderName="searchShows"
                 />
               ))}
           </Row>
@@ -127,17 +130,17 @@ function TopRatedSlider() {
           </svg>
         </button>
       </Slider>
-      {bigMovieMatch && clickedMovie && (
+      {bigMovieMatch && clickTvShow && (
         <BigMovieComponent
-          sliderName="topRated"
-          title={clickedMovie.title}
-          backdrop_path={clickedMovie.backdrop_path ?? clickedMovie.poster_path}
-          overview={clickedMovie.overview}
-          movieId={`${bigMovieMatch.params.movieId}`}
+          sliderName="searchShows"
+          title={clickTvShow.name}
+          backdrop_path={clickTvShow.backdrop_path ?? clickTvShow.poster_path}
+          overview={clickTvShow.overview}
+          movieId={`${bigMovieMatch.params.searchId}`}
         />
       )}
-    </>
+    </React.Fragment>
   );
 }
 
-export default TopRatedSlider;
+export default SearchTvShowSlider;

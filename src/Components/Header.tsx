@@ -53,6 +53,11 @@ const Item = styled.li`
   &:hover {
     color: ${(props) => props.theme.white.lighter};
   }
+  span:first-child {
+    padding: 5px 10px;
+    background-color: rgba(78, 78, 78, 0.7);
+    border-radius: 10px;
+  }
 `;
 
 const Circle = styled(motion.span)`
@@ -73,6 +78,7 @@ const Search = styled.form`
   align-items: center;
   position: relative;
   svg {
+    cursor: pointer;
     height: 25px;
   }
 `;
@@ -164,11 +170,13 @@ function Header() {
         </Logo>
         <Items>
           <Item>
-            <Link to="/">Home {homeMatch && <Circle layoutId="circle" />}</Link>
+            <Link to="/">
+              <span>Home</span> {homeMatch && <Circle layoutId="circle" />}
+            </Link>
           </Item>
           <Item>
             <Link to="tv">
-              Tv Show {tvMatch && <Circle layoutId="circle" />}
+              <span>Tv Show</span> {tvMatch && <Circle layoutId="circle" />}
             </Link>
           </Item>
         </Items>

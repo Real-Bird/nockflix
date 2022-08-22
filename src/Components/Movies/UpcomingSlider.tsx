@@ -79,9 +79,10 @@ function UpcomingComponent() {
                 <BoxComponent
                   key={movie.id}
                   id={movie.id}
-                  backdropPath={movie.backdrop_path}
+                  backdropPath={movie.backdrop_path ?? movie.poster_path}
                   title={movie.title}
                   type="movies"
+                  sliderName="upcoming"
                 />
               ))}
           </Row>
@@ -127,8 +128,9 @@ function UpcomingComponent() {
       </Slider>
       {bigMovieMatch && clickedMovie && (
         <BigMovieComponent
+          sliderName="upcoming"
           title={clickedMovie.title}
-          backdrop_path={clickedMovie.backdrop_path}
+          backdrop_path={clickedMovie.backdrop_path ?? clickedMovie.poster_path}
           overview={clickedMovie.overview}
           movieId={`${bigMovieMatch.params.movieId}`}
         />

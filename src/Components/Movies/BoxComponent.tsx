@@ -61,9 +61,10 @@ interface IBoxPops {
   backdropPath: string;
   title: string;
   type: string;
+  sliderName: string;
 }
 
-function BoxComponent({ id, backdropPath, title, type }: IBoxPops) {
+function BoxComponent({ id, backdropPath, title, type, sliderName }: IBoxPops) {
   const navigate = useNavigate();
   const onBoxClicked = (id: number) => {
     navigate(`/${type}/${id}`);
@@ -76,7 +77,7 @@ function BoxComponent({ id, backdropPath, title, type }: IBoxPops) {
       onClick={() => onBoxClicked(id)}
       transition={{ type: "tween" }}
       $bgPhoto={makeImagePath(backdropPath || "", "w500")}
-      layoutId={id + ""}
+      layoutId={`${sliderName}_${id}`}
     >
       <Info variants={infoVariants}>
         <h4>{title}</h4>

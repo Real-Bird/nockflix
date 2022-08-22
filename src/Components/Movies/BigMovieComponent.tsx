@@ -46,6 +46,7 @@ const BigOverview = styled.p`
 `;
 
 interface BigMovieProps {
+  sliderName: string;
   movieId: string;
   backdrop_path: string;
   title: string;
@@ -53,6 +54,7 @@ interface BigMovieProps {
 }
 
 function BigMovieComponent({
+  sliderName,
   movieId,
   backdrop_path,
   title,
@@ -61,6 +63,7 @@ function BigMovieComponent({
   const navigate = useNavigate();
   const onOverlayClick = () => navigate(-1);
   const { scrollY } = useScroll();
+  console.log("big", sliderName, movieId);
   return (
     <AnimatePresence>
       <>
@@ -70,7 +73,7 @@ function BigMovieComponent({
           animate={{ opacity: 1, zIndex: 999 }}
         />
         <BigMovie
-          layoutId={movieId}
+          layoutId={`${sliderName}_${movieId}`}
           style={{ top: scrollY.get() + 100, zIndex: 999 }}
         >
           <>

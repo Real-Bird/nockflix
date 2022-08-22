@@ -80,9 +80,10 @@ function NowPlayingSlider() {
                 <BoxComponent
                   key={movie.id}
                   id={movie.id}
-                  backdropPath={movie.backdrop_path}
+                  backdropPath={movie.backdrop_path ?? movie.poster_path}
                   title={movie.title}
                   type="movies"
+                  sliderName="nowPlay"
                 />
               ))}
           </Row>
@@ -128,8 +129,9 @@ function NowPlayingSlider() {
       </Slider>
       {bigMovieMatch && clickedMovie && (
         <BigMovieComponent
+          sliderName="nowPlay"
           title={clickedMovie.title}
-          backdrop_path={clickedMovie.backdrop_path}
+          backdrop_path={clickedMovie.backdrop_path ?? clickedMovie.poster_path}
           overview={clickedMovie.overview}
           movieId={`${bigMovieMatch.params.movieId}`}
         />
