@@ -1,0 +1,12 @@
+{
+  "files": {
+    "main.css": "/nockflix/static/css/main.97de47a2.css",
+    "main.js": "/nockflix/static/js/main.40864a14.js",
+    "index.html": "/nockflix/index.html",
+    "main.40864a14.js.map": "/nockflix/static/js/main.40864a14.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.97de47a2.css",
+    "static/js/main.40864a14.js"
+  ]
+}
