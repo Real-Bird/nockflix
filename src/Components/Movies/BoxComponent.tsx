@@ -60,12 +60,13 @@ interface IBoxPops {
   id: number;
   backdropPath: string;
   title: string;
+  type: string;
 }
 
-function BoxComponent({ id, backdropPath, title }: IBoxPops) {
+function BoxComponent({ id, backdropPath, title, type }: IBoxPops) {
   const navigate = useNavigate();
-  const onBoxClicked = (movieId: number) => {
-    navigate(`/movies/${movieId}`);
+  const onBoxClicked = (id: number) => {
+    navigate(`/${type}/${id}`);
   };
   return (
     <Box

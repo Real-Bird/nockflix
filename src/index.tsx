@@ -5,7 +5,7 @@ import "./global.css";
 import { RecoilRoot } from "recoil";
 import { ThemeProvider } from "styled-components";
 import App from "./App";
-import { GlobalStyle } from "./Components/globalStyled";
+import { GlobalStyle } from "./Components/StyledComponents/globalStyled";
 import { theme } from "./theme";
 
 const queryClient = new QueryClient();

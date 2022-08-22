@@ -11,4 +11,8 @@ export const theme: DefaultTheme = {
     lighter: "#fff",
     darker: "#e5e5e5",
   },
+  fonts: {
+    eng: "'Chilanka', cursive",
+    kor: "'Gugi', cursive",
+  },
 };

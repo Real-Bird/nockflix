@@ -1,46 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { AnimatePresence } from "framer-motion";
+import React, { useState } from "react";
 import { useMatch } from "react-router-dom";
-import styled from "styled-components";
-import { getTopRatedMovies, IGetMoviesResult } from "../../apis";
-import BigMovieComponent from "./BigMovieComponent";
-import BoxComponent from "./BoxComponent";
-
-const Slider = styled.div`
-  position: relative;
-  top: -140px;
-  height: 300px;
-  button {
-    position: absolute;
-    top: 40%;
-    margin: 20px;
-    width: 3rem;
-    height: 4rem;
-    background-color: rgba(229, 229, 229, 0.7);
-    opacity: 0.4;
-    border: transparent;
-    border-radius: 10px;
-    cursor: pointer;
-    &:hover {
-      opacity: 1;
-    }
-  }
-`;
-
-const SliderTitle = styled.h1`
-  padding: 10px;
-  font-size: 34px;
-  font-weight: bold;
-`;
-
-const Row = styled(motion.div)`
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 5px;
-  position: absolute;
-  width: 100%;
-`;
+import { getTopRatedTvShow, IGetTvShowResult } from "../../apis";
+import BigMovieComponent from "../Movies/BigMovieComponent";
+import BoxComponent from "../Movies/BoxComponent";
+import { Row, Slider, SliderTitle } from "../StyledComponents/SliderStyle";
 
 const offset = 6;
 
@@ -60,26 +25,21 @@ const rowVariants = {
   },
 };
 
-function TopRatedSlider() {
-  const { data } = useQuery<IGetMoviesResult>(
-    ["movies", "topRated"],
-    getTopRatedMovies
+function TopRatedShowSlider() {
+  const { data } = useQuery<IGetTvShowResult>(
+    ["tvShow", "topRated"],
+    getTopRatedTvShow
   );
+  const bigMovieMatch = useMatch("/tv/:showId");
   const [direction, setDirection] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const [index, setIndex] = useState(0);
-  const bigMovieMatch = useMatch("/movies/:movieId");
-  const clickedMovie =
-    bigMovieMatch?.params.movieId &&
-    data?.results.find(
-      (movie) => `${movie.id}` === bigMovieMatch.params.movieId
-    );
   const increaseIndex = () => {
     if (data) {
       if (leaving) return;
       toggleLeaving();
-      const totalMovies = data.results.length - 1;
-      const maxIndex = Math.floor(totalMovies / offset) - 1;
+      const totalTvShows = data.results.length - 1;
+      const maxIndex = Math.floor(totalTvShows / offset) - 1;
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
   };
@@ -94,10 +54,14 @@ function TopRatedSlider() {
     }
   };
   const toggleLeaving = () => setLeaving((prev) => !prev);
+  const clickedShow =
+    bigMovieMatch?.params.showId &&
+    data?.results.find((show) => `${show.id}` === bigMovieMatch.params.showId);
+  console.log(bigMovieMatch);
   return (
-    <>
+    <React.Fragment>
       <Slider>
-        <SliderTitle>Top Rated Movies</SliderTitle>
+        <SliderTitle>Top Rated</SliderTitle>
         <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
           <Row
             custom={direction}
@@ -110,12 +74,13 @@ function TopRatedSlider() {
           >
             {data?.results
               .slice(offset * index, offset * index + offset)
-              .map((movie) => (
+              .map((show) => (
                 <BoxComponent
-                  key={movie.id}
-                  id={movie.id}
-                  backdropPath={movie.backdrop_path}
-                  title={movie.title}
+                  key={show.id}
+                  id={show.id}
+                  backdropPath={show.backdrop_path ?? show.poster_path}
+                  title={show.name}
+                  type="tv"
                 />
               ))}
           </Row>
@@ -159,16 +124,16 @@ function TopRatedSlider() {
           </svg>
         </button>
       </Slider>
-      {bigMovieMatch && clickedMovie && (
+      {bigMovieMatch && clickedShow && (
         <BigMovieComponent
-          title={clickedMovie.title}
-          backdrop_path={clickedMovie.backdrop_path}
-          overview={clickedMovie.overview}
-          movieId={`${bigMovieMatch.params.movieId}`}
+          title={clickedShow.name}
+          backdrop_path={clickedShow.backdrop_path ?? clickedShow.poster_path}
+          overview={clickedShow.overview}
+          movieId={`${bigMovieMatch.params.showId}`}
         />
       )}
-    </>
+    </React.Fragment>
   );
 }
 
-export default TopRatedSlider;
+export default TopRatedShowSlider;

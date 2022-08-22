@@ -2,9 +2,9 @@ import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
 import { useMatch } from "react-router-dom";
-import { IGetMoviesResult } from "../../apis";
-import BigMovieComponent from "./BigMovieComponent";
-import BoxComponent from "./BoxComponent";
+import { getAirTodayTvShow, IGetTvShowResult } from "../../apis";
+import BigMovieComponent from "../Movies/BigMovieComponent";
+import BoxComponent from "../Movies/BoxComponent";
 import { Row, Slider, SliderTitle } from "../StyledComponents/SliderStyle";
 
 const offset = 6;
@@ -25,9 +25,12 @@ const rowVariants = {
   },
 };
 
-function NowPlayingSlider() {
-  const { data } = useQuery<IGetMoviesResult>(["movies", "nowPlaying"]);
-  const bigMovieMatch = useMatch("/movies/:movieId");
+function AirTodaySlider() {
+  const { data } = useQuery<IGetTvShowResult>(
+    ["tvShow", "airToday"],
+    getAirTodayTvShow
+  );
+  const bigMovieMatch = useMatch("/tv/:showId");
   const [direction, setDirection] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const [index, setIndex] = useState(0);
@@ -35,8 +38,8 @@ function NowPlayingSlider() {
     if (data) {
       if (leaving) return;
       toggleLeaving();
-      const totalMovies = data.results.length - 1;
-      const maxIndex = Math.floor(totalMovies / offset) - 1;
+      const totalTvShows = data.results.length - 1;
+      const maxIndex = Math.floor(totalTvShows / offset) - 1;
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
   };
@@ -51,15 +54,14 @@ function NowPlayingSlider() {
     }
   };
   const toggleLeaving = () => setLeaving((prev) => !prev);
-  const clickedMovie =
-    bigMovieMatch?.params.movieId &&
-    data?.results.find(
-      (movie) => `${movie.id}` === bigMovieMatch.params.movieId
-    );
+  const clickedShow =
+    bigMovieMatch?.params.showId &&
+    data?.results.find((show) => `${show.id}` === bigMovieMatch.params.showId);
+  console.log(bigMovieMatch);
   return (
     <React.Fragment>
       <Slider>
-        <SliderTitle>Latest Movies</SliderTitle>
+        <SliderTitle>Airing Today</SliderTitle>
         <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
           <Row
             custom={direction}
@@ -71,18 +73,14 @@ function NowPlayingSlider() {
             exit="exit"
           >
             {data?.results
-              .sort(
-                (a, b) =>
-                  Date.parse(b.release_date) - Date.parse(a.release_date)
-              )
               .slice(offset * index, offset * index + offset)
-              .map((movie) => (
+              .map((show) => (
                 <BoxComponent
-                  key={movie.id}
-                  id={movie.id}
-                  backdropPath={movie.backdrop_path}
-                  title={movie.title}
-                  type="movies"
+                  key={show.id}
+                  id={show.id}
+                  backdropPath={show.backdrop_path ?? show.poster_path}
+                  title={show.name}
+                  type="tv"
                 />
               ))}
           </Row>
@@ -126,16 +124,16 @@ function NowPlayingSlider() {
           </svg>
         </button>
       </Slider>
-      {bigMovieMatch && clickedMovie && (
+      {bigMovieMatch && clickedShow && (
         <BigMovieComponent
-          title={clickedMovie.title}
-          backdrop_path={clickedMovie.backdrop_path}
-          overview={clickedMovie.overview}
-          movieId={`${bigMovieMatch.params.movieId}`}
+          title={clickedShow.name}
+          backdrop_path={clickedShow.backdrop_path ?? clickedShow.poster_path}
+          overview={clickedShow.overview}
+          movieId={`${bigMovieMatch.params.showId}`}
         />
       )}
     </React.Fragment>
   );
 }
 
-export default NowPlayingSlider;
+export default AirTodaySlider;

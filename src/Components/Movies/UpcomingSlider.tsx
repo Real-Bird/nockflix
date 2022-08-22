@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence } from "framer-motion";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useMatch } from "react-router-dom";
-import { IGetMoviesResult } from "../../apis";
+import { getUpcomingMovies, IGetMoviesResult } from "../../apis";
 import BigMovieComponent from "./BigMovieComponent";
 import BoxComponent from "./BoxComponent";
 import { Row, Slider, SliderTitle } from "../StyledComponents/SliderStyle";
@@ -25,12 +25,20 @@ const rowVariants = {
   },
 };
 
-function NowPlayingSlider() {
-  const { data } = useQuery<IGetMoviesResult>(["movies", "nowPlaying"]);
-  const bigMovieMatch = useMatch("/movies/:movieId");
+function UpcomingComponent() {
+  const { data } = useQuery<IGetMoviesResult>(
+    ["movies", "upcoming"],
+    getUpcomingMovies
+  );
   const [direction, setDirection] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const [index, setIndex] = useState(0);
+  const bigMovieMatch = useMatch("/movies/:movieId");
+  const clickedMovie =
+    bigMovieMatch?.params.movieId &&
+    data?.results.find(
+      (movie) => `${movie.id}` === bigMovieMatch.params.movieId
+    );
   const increaseIndex = () => {
     if (data) {
       if (leaving) return;
@@ -51,15 +59,10 @@ function NowPlayingSlider() {
     }
   };
   const toggleLeaving = () => setLeaving((prev) => !prev);
-  const clickedMovie =
-    bigMovieMatch?.params.movieId &&
-    data?.results.find(
-      (movie) => `${movie.id}` === bigMovieMatch.params.movieId
-    );
   return (
-    <React.Fragment>
+    <>
       <Slider>
-        <SliderTitle>Latest Movies</SliderTitle>
+        <SliderTitle>Upcoming Movies</SliderTitle>
         <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
           <Row
             custom={direction}
@@ -71,10 +74,6 @@ function NowPlayingSlider() {
             exit="exit"
           >
             {data?.results
-              .sort(
-                (a, b) =>
-                  Date.parse(b.release_date) - Date.parse(a.release_date)
-              )
               .slice(offset * index, offset * index + offset)
               .map((movie) => (
                 <BoxComponent
@@ -134,8 +133,8 @@ function NowPlayingSlider() {
           movieId={`${bigMovieMatch.params.movieId}`}
         />
       )}
-    </React.Fragment>
+    </>
   );
 }
 
-export default NowPlayingSlider;
+export default UpcomingComponent;

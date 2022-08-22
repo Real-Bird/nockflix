@@ -21,6 +21,22 @@ export interface IGetMoviesResult {
   total_results: number;
 }
 
+export interface ITvShow {
+  backdrop_path: string;
+  first_air_date: string;
+  id: number;
+  name: string;
+  overview: string;
+  poster_path: string;
+}
+
+export interface IGetTvShowResult {
+  page: number;
+  results: ITvShow[];
+  total_pages: number;
+  total_results: number;
+}
+
 export async function getLatestMovies() {
   return await (
     await fetch(
@@ -41,6 +57,30 @@ export async function getUpcomingMovies() {
   return await (
     await fetch(
       `${BASE_PATH}/movie/upcoming?api_key=${API_KEY}&language=ko&region=kr`
+    )
+  ).json();
+}
+
+export async function getLatestTvShow() {
+  return await (
+    await fetch(
+      `${BASE_PATH}/tv/on_the_air?api_key=${API_KEY}&language=ko&region=kr`
+    )
+  ).json();
+}
+
+export async function getAirTodayTvShow() {
+  return await (
+    await fetch(
+      `${BASE_PATH}/tv/airing_today?api_key=${API_KEY}&language=ko&region=kr`
+    )
+  ).json();
+}
+
+export async function getTopRatedTvShow() {
+  return await (
+    await fetch(
+      `${BASE_PATH}/tv/top_rated?api_key=${API_KEY}&language=ko&region=kr`
     )
   ).json();
 }
