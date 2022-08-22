@@ -137,6 +137,8 @@ function SearchTvShowSlider({ query }: ISearchProps) {
           backdrop_path={clickTvShow.backdrop_path ?? clickTvShow.poster_path}
           overview={clickTvShow.overview}
           movieId={`${bigMovieMatch.params.searchId}`}
+          vote_average={clickTvShow.vote_average}
+          release_date={clickTvShow.first_air_date}
         />
       )}
     </React.Fragment>

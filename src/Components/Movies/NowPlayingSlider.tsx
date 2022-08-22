@@ -134,6 +134,8 @@ function NowPlayingSlider() {
           backdrop_path={clickedMovie.backdrop_path ?? clickedMovie.poster_path}
           overview={clickedMovie.overview}
           movieId={`${bigMovieMatch.params.movieId}`}
+          vote_average={clickedMovie.vote_average}
+          release_date={clickedMovie.release_date}
         />
       )}
     </React.Fragment>

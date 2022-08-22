@@ -30,12 +30,14 @@ const BigCover = styled.div`
   background-position: center center;
   height: 400px;
 `;
-const BigTitle = styled.h3`
+const BigTitle = styled.div`
   color: ${(props) => props.theme.white.lighter};
   padding: 20px;
-  font-size: 46px;
   position: relative;
   top: -80px;
+  h3 {
+    font-size: 46px;
+  }
 `;
 
 const BigOverview = styled.p`
@@ -45,12 +47,25 @@ const BigOverview = styled.p`
   color: ${(props) => props.theme.white.lighter};
 `;
 
+const BigRelease = styled.span`
+  padding: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  position: absolute;
+  span {
+    margin: 5px;
+  }
+`;
+
 interface BigMovieProps {
   sliderName: string;
   movieId: string;
   backdrop_path: string;
   title: string;
   overview: string;
+  vote_average: number;
+  release_date: string;
 }
 
 function BigMovieComponent({
@@ -59,11 +74,12 @@ function BigMovieComponent({
   backdrop_path,
   title,
   overview,
+  vote_average,
+  release_date,
 }: BigMovieProps) {
   const navigate = useNavigate();
   const onOverlayClick = () => navigate(-1);
   const { scrollY } = useScroll();
-  console.log("big", sliderName, movieId);
   return (
     <AnimatePresence>
       <>
@@ -85,7 +101,13 @@ function BigMovieComponent({
                 )})`,
               }}
             />
-            <BigTitle>{title}</BigTitle>
+            <BigTitle>
+              <h3>{title}</h3>
+              <BigRelease>
+                <span>Release : {release_date}</span>
+                <span>Average : {vote_average}</span>
+              </BigRelease>
+            </BigTitle>
             <BigOverview>{overview}</BigOverview>
           </>
         </BigMovie>

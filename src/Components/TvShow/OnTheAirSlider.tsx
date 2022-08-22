@@ -132,6 +132,8 @@ function OnTheAirSlider() {
           backdrop_path={clickedShow.backdrop_path ?? clickedShow.poster_path}
           overview={clickedShow.overview}
           movieId={`${bigMovieMatch.params.showId}`}
+          vote_average={clickedShow.vote_average}
+          release_date={clickedShow.first_air_date}
         />
       )}
     </React.Fragment>
