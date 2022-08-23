@@ -19,7 +19,6 @@ Link: <https://real-bird.github.io/nockflix/>
 
 [nockflix.webm](https://user-images.githubusercontent.com/83404864/185932430-cd57ea6e-f559-43cf-a295-001baad09774.webm)
 
-
 ## 설치 및 실행
 
 - [맨 위로](#목차)
@@ -62,12 +61,44 @@ $ npm start
 - ![React Hook Form](https://img.shields.io/badge/React%20Hook%20Form-EC5990?style=flat&logo=React%20Hook%20Form&logoColor=white) : `form` 작성 편의 라이브러리
 - ![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-222222?style=flat&logo=GitHub%20Pages&logoColor=white) : 배포 라이브러리
 
-
 ## 디렉토리 구조
 
 - [맨 위로](#목차)
 
-![nockflix tree](https://user-images.githubusercontent.com/83404864/185940813-9bc78e67-18c8-46c7-bb86-c1d202e459e2.png)
+```bash
+· 📂src/
+  ├─ 📂Components/
+  │  ├─ 📂Movies/
+  │  │  ├─ 💾BigMovieComponent.tsx
+  │  │  ├─ 💾BoxComponent.tsx
+  │  │  ├─ 💾NowPlayingSlider.tsx
+  │  │  ├─ 💾TopRatedSlider.tsx
+  │  │  └─ 💾UpcomingSlider.tsx
+  │  ├─ 📂Search/
+  │  │  ├─ 💾SearchMoviesSlider.tsx
+  │  │  └─ 💾SearchTvShowSlider.tsx
+  │  ├─ 📂StyledComponents/
+  │  │  ├─ 💾SliderStyle.ts
+  │  │  ├─ 💾WrapperStyle.ts
+  │  │  └─ 💾globalStyled.ts
+  │  ├─ 📂TvShow/
+  │  │  ├─ 💾AirTodaySlider.tsx
+  │  │  ├─ 💾OnTheAirSlider.tsx
+  │  │  └─ 💾TopRatedShowSlider.tsx
+  │  ├─ 💾Header.tsx
+  ├─ 📂Routes/
+  │  ├─ 💾Home.tsx
+  │  ├─ 💾Search.tsx
+  │  └─ 💾Tv.tsx
+  ├─ 💾App.tsx
+  ├─ 💾apis.ts
+  ├─ 💾global.css
+  ├─ 💾index.tsx
+  ├─ 💾react-app-env.d.ts
+  ├─ 💾styled.d.ts
+  ├─ 💾theme.ts
+  └─ 💾utils.ts
+```
 
 ## 주안점
 
